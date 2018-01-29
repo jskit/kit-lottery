@@ -1,5 +1,4 @@
-import './modules/assign'
-import Events from './modules/events'
+import Events from './utils/events'
 
 /* eslint no-underscore-dangle: 0 */
 class LotteryCard extends Events {

@@ -1,6 +1,5 @@
-import './modules/assign'
-import Events from './modules/events'
-import animationEnd from './modules/animationEnd'
+import Events from './utils/events'
+import animationEnd from './utils/animationEnd'
 
 /* eslint no-underscore-dangle: 0 */
 class LotteryTigerRoller {

@@ -1,7 +1,6 @@
-import './modules/assign'
-import Events from './modules/events'
-import getPrefix from './modules/getPrefix'
-import { requestAnimationFrame, cancelAnimationFrame } from './modules/requestAnimationFrame'
+import Events from './utils/events'
+import getPrefix from './utils/getPrefix'
+import { requestAnimationFrame, cancelAnimationFrame } from './utils/requestAnimationFrame'
 
 /* eslint no-underscore-dangle: 0 */
 class LotteryDial extends Events {

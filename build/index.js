@@ -16,31 +16,31 @@ const banner = `/*!
  */`
 
 const builds = [{
-  entry: 'src/card.js',
+  input: 'src/card.js',
   format: 'umd',
   moduleName: 'LotteryCard',
   dest: 'dist/card.js',
-  banner: true
+  banner: true,
 }, {
-  entry: 'src/tiger.js',
+  input: 'src/tiger.js',
   format: 'umd',
   moduleName: 'LotteryTiger',
   dest: 'dist/tiger.js',
-  banner: true
+  banner: true,
 }, {
-  entry: 'src/dial.js',
+  input: 'src/dial.js',
   format: 'umd',
   moduleName: 'LotteryDial',
   dest: 'dist/dial.js',
-  banner: true
+  banner: true,
 }]
 
 if (process.env.NODE_ENV === 'development') {
   fs.watch(path.join(__dirname, '../src/'), {
-    persistent: true
+    persistent: true,
   }, watch)
   fs.watch(path.join(__dirname, '../src/modules'), {
-    persistent: true
+    persistent: true,
   }, watch)
 }
 
@@ -52,32 +52,34 @@ function build () {
       const plugins = [
         babel({
           presets: ['es2015-loose-rollup'],
-          exclude: ['node_modules/**']
-        })
+          exclude: ['node_modules/**'],
+        }),
       ]
 
       // 压缩
       if (obj.uglify || process.env.NODE_ENV === 'production') plugins.push(uglify())
 
       rollup.rollup({
-        entry: obj.entry,
-        banner: true,
-        plugins: plugins
-      }).then(function (bundle) {
-        const code = bundle.generate({
+        input: obj.input,
+        output: {
+          banner: obj.banner,
+        },
+        plugins,
+      }).then((bundle) => {
+        const { code } = bundle.generate({
           format: obj.format,
-          banner: banner,
-          moduleName: obj.moduleName
-        }).code
+          banner,
+          moduleName: obj.moduleName,
+        })
         write(obj.dest, code)
-      }, function (err) {
+      }, (err) => {
         console.log(err)
       })
     }
   }
 }
 
-function watch (event, filename) {
+function watch(event, filename) {
   if (event === 'rename') {
     if (!/(___jb_tmp___|___jb_old___)$/.test(filename)) {
       build()
@@ -85,9 +87,9 @@ function watch (event, filename) {
   }
 }
 
-function write (dest, code) {
-  return new Promise(function (resolve, reject) {
-    fs.writeFile(dest, code, function (err) {
+function write(dest, code) {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(dest, code, (err) => {
       if (err) return reject(err)
       console.log(blue(dest) + ' ' + getSize(code))
       resolve()

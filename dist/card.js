@@ -1,1 +1,221 @@
-!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define(e):t.LotteryCard=e()}(this,function(){"use strict";Object.assign=Object.assign||function(t){if(void 0===t||null===t)throw new TypeError("Cannot convert undefined or null to object");for(var e=Object(t),i=1;i<arguments.length;i++){var n=arguments[i];if(void 0!==n&&null!==n)for(var o in n)n.hasOwnProperty(o)&&(e[o]=n[o])}return e};var t=function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")},e=function(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)},i=function(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e},n=function(){function e(){t(this,e),this._queue=[]}return e.prototype.on=function(t,e){return this._queue[t]=this._queue[t]||[],this._queue[t].push(e),this},e.prototype.off=function(t,e){if(this._queue[t]){var i=void 0===e?-2:this._queue[t].indexOf(e);-2===i?delete this._queue[t]:-1!==i&&this._queue[t].splice(i,1),this._queue[t]&&0===this._queue[t].length&&delete this._queue[t]}return this},e.prototype.has=function(t){return!!this._queue[t]},e.prototype.trigger=function(t){for(var e=this,i=arguments.length,n=Array(i>1?i-1:0),o=1;o<i;o++)n[o-1]=arguments[o];return this._queue[t]&&this._queue[t].forEach(function(t){return t.apply(e,n)}),this},e}();return function(n){function o(e,s){t(this,o);var h=i(this,n.call(this));return h.options=Object.assign({size:20,percent:50,resize:!0,cover:null},s),h.canvas=e,h.ctx=e.getContext("2d"),h._first=!0,h._touch=!1,h.init(),h.bind(),h}return e(o,n),o.prototype.getCanvasInfo=function(){var t=this.canvas.getBoundingClientRect(),e=window.pageYOffset||document.documentElement.scrollTop||document.body.scrollTop||0,i=window.pageXOffset||document.documentElement.scrollLeft||document.body.scrollLeftp||0;this.width=t.width,this.height=t.height,this.offsetX=Math.round(t.left+i),this.offsetY=Math.round(t.top+e),this.canvas.width=t.width,this.canvas.height=t.height},o.prototype.bind=function(){var t="ontouchstart"in window&&/mobile|tablet|ip(ad|hone|od)|android/i.test(navigator.userAgent);this.canvas.addEventListener(t?"touchstart":"mousedown",this.onTouchStart.bind(this),!1),this.canvas.addEventListener(t?"touchmove":"mousemove",this.onTouchMove.bind(this),!1),document.addEventListener(t?"touchend":"mouseup",this.onTouchEnd.bind(this)),window.addEventListener("onorientationchange"in document?"orientationchange":"resize",this.onResize.bind(this))},o.prototype.init=function(){this._state="init",this.getCanvasInfo(),this.ctx.closePath(),this.ctx.globalCompositeOperation="source-over";var t=this.options.cover;t instanceof Image?(this.ctx.fillStyle=this.ctx.createPattern(t,"repeat"),this.ctx.rect(0,0,this.width,this.height)):(this.ctx.fillStyle="string"==typeof t?t:"gray",this.ctx.fillRect(0,0,this.width,this.height)),this.ctx.fill(),this.ctx.globalCompositeOperation="destination-out"},o.prototype.reset=function(){this._first=!0,this._touch=!1,this.canvas.style.backgroundImage=null,this.init(),this.trigger("reset")},o.prototype.setResult=function(t){this.canvas.style.backgroundImage="url("+t+")"},o.prototype.draw=function(){"end"!==this._state&&(this._state="end",this.ctx.clearRect(0,0,this.width,this.height),this.trigger("end"))},o.prototype.scratchPercent=function(){for(var t=this.ctx.getImageData(0,0,this.width,this.height),e=0,i=0,n=t.data.length;i<n;i+=4)0===t.data[i]&&0===t.data[i+1]&&0===t.data[i+2]&&0===t.data[i+3]&&e++;return e/(this.width*this.height)*100},o.prototype.getEventXY=function(t){return t=t.changedTouches?t.changedTouches[0]:t,{x:t.pageX-this.offsetX,y:t.pageY-this.offsetY}},o.prototype.onTouchStart=function(t){if(t.preventDefault(),"end"!==this._state){this.has("start")&&this._first&&this.trigger("start");var e=this.getEventXY(t);this._state="start",this._touch=!0,this._first=!1,this.ctx.beginPath(),this.ctx.arc(e.x,e.y,this.options.size/2,0,2*Math.PI,!0),this.ctx.closePath(),this.ctx.fill(),this.ctx.beginPath(),this.ctx.lineWidth=this.options.size,this.ctx.moveTo(e.x,e.y)}},o.prototype.onTouchMove=function(t){if(t.preventDefault(),this._touch){var e=this.getEventXY(t);this.ctx.lineTo(e.x,e.y),this.ctx.stroke()}},o.prototype.onTouchEnd=function(t){if(this._touch){this._touch=!1;var e=this.getEventXY(t);this.ctx.closePath(),this.ctx.beginPath(),this.ctx.arc(e.x,e.y,this.options.size/2,0,2*Math.PI,!0),this.ctx.closePath(),this.ctx.fill(),this.scratchPercent()>=this.options.percent&&(this.ctx.clearRect(0,0,this.width,this.height),this._state="end",this.trigger("end"))}},o.prototype.onResize=function(){this._touch=!1,this.options.resize&&"end"!==this._state?this.init():this.getCanvasInfo()},o}(n)});
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _assign = require('babel-runtime/core-js/object/assign');
+
+var _assign2 = _interopRequireDefault(_assign);
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+require('./modules/assign');
+
+var _events = require('./modules/events');
+
+var _events2 = _interopRequireDefault(_events);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var LotteryCard = function (_Events) {
+  (0, _inherits3.default)(LotteryCard, _Events);
+
+  function LotteryCard(canvas, options) {
+    (0, _classCallCheck3.default)(this, LotteryCard);
+
+    var _this = (0, _possibleConstructorReturn3.default)(this, (LotteryCard.__proto__ || (0, _getPrototypeOf2.default)(LotteryCard)).call(this));
+
+    _this.options = (0, _assign2.default)({
+      size: 20,
+      percent: 50,
+      resize: true,
+      cover: null
+    }, options);
+
+    _this.canvas = canvas;
+    _this.ctx = canvas.getContext('2d');
+
+    _this._first = true;
+    _this._touch = false;
+    _this.init();
+    _this.bind();
+    return _this;
+  }
+
+  (0, _createClass3.default)(LotteryCard, [{
+    key: 'getCanvasInfo',
+    value: function getCanvasInfo() {
+      var info = this.canvas.getBoundingClientRect();
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeftp || 0;
+
+      this.width = info.width;
+      this.height = info.height;
+      this.offsetX = Math.round(info.left + scrollLeft);
+      this.offsetY = Math.round(info.top + scrollTop);
+      this.canvas.width = info.width;
+      this.canvas.height = info.height;
+    }
+  }, {
+    key: 'bind',
+    value: function bind() {
+      var SUPPORT_ONLY_TOUCH = 'ontouchstart' in window && /mobile|tablet|ip(ad|hone|od)|android/i.test(navigator.userAgent);
+
+      this.canvas.addEventListener(SUPPORT_ONLY_TOUCH ? 'touchstart' : 'mousedown', this.onTouchStart.bind(this), false);
+      this.canvas.addEventListener(SUPPORT_ONLY_TOUCH ? 'touchmove' : 'mousemove', this.onTouchMove.bind(this), false);
+      document.addEventListener(SUPPORT_ONLY_TOUCH ? 'touchend' : 'mouseup', this.onTouchEnd.bind(this));
+      window.addEventListener('onorientationchange' in document ? 'orientationchange' : 'resize', this.onResize.bind(this));
+    }
+  }, {
+    key: 'init',
+    value: function init() {
+      this._state = 'init';
+      this.getCanvasInfo();
+
+      this.ctx.closePath();
+      this.ctx.globalCompositeOperation = 'source-over';
+      var cover = this.options.cover;
+
+      if (cover instanceof Image) {
+        this.ctx.fillStyle = this.ctx.createPattern(cover, 'repeat');
+        this.ctx.rect(0, 0, this.width, this.height);
+      } else {
+        this.ctx.fillStyle = typeof cover === 'string' ? cover : 'gray';
+        this.ctx.fillRect(0, 0, this.width, this.height);
+      }
+      this.ctx.fill();
+      this.ctx.globalCompositeOperation = 'destination-out';
+    }
+  }, {
+    key: 'reset',
+    value: function reset() {
+      this._first = true;
+      this._touch = false;
+      this.canvas.style.backgroundImage = null;
+      this.init();
+      this.trigger('reset');
+    }
+  }, {
+    key: 'setResult',
+    value: function setResult(url) {
+      this.canvas.style.backgroundImage = 'url(' + url + ')';
+    }
+  }, {
+    key: 'draw',
+    value: function draw() {
+      if (this._state === 'end') return;
+      this._state = 'end';
+      this.ctx.clearRect(0, 0, this.width, this.height);
+      this.trigger('end');
+    }
+  }, {
+    key: 'scratchPercent',
+    value: function scratchPercent() {
+      var imageData = this.ctx.getImageData(0, 0, this.width, this.height);
+      var hits = 0;
+
+      for (var i = 0, ii = imageData.data.length; i < ii; i += 4) {
+        if (imageData.data[i] === 0 && imageData.data[i + 1] === 0 && imageData.data[i + 2] === 0 && imageData.data[i + 3] === 0) {
+          hits++;
+        }
+      }
+
+      return hits / (this.width * this.height) * 100;
+    }
+  }, {
+    key: 'getEventXY',
+    value: function getEventXY(e) {
+      e = e.changedTouches ? e.changedTouches[0] : e;
+      return {
+        x: e.pageX - this.offsetX,
+        y: e.pageY - this.offsetY
+      };
+    }
+  }, {
+    key: 'onTouchStart',
+    value: function onTouchStart(e) {
+      e.preventDefault();
+      if (this._state === 'end') return;
+      if (this.has('start') && this._first) this.trigger('start');
+
+      var point = this.getEventXY(e);
+      this._state = 'start';
+      this._touch = true;
+      this._first = false;
+
+      this.ctx.beginPath();
+      this.ctx.arc(point.x, point.y, this.options.size / 2, 0, Math.PI * 2, true);
+      this.ctx.closePath();
+      this.ctx.fill();
+
+      this.ctx.beginPath();
+      this.ctx.lineWidth = this.options.size;
+      this.ctx.moveTo(point.x, point.y);
+    }
+  }, {
+    key: 'onTouchMove',
+    value: function onTouchMove(e) {
+      e.preventDefault();
+      if (!this._touch) return;
+
+      var point = this.getEventXY(e);
+      this.ctx.lineTo(point.x, point.y);
+      this.ctx.stroke();
+    }
+  }, {
+    key: 'onTouchEnd',
+    value: function onTouchEnd(e) {
+      if (!this._touch) return;
+      this._touch = false;
+
+      var point = this.getEventXY(e);
+      this.ctx.closePath();
+      this.ctx.beginPath();
+      this.ctx.arc(point.x, point.y, this.options.size / 2, 0, Math.PI * 2, true);
+      this.ctx.closePath();
+      this.ctx.fill();
+
+      if (this.scratchPercent() >= this.options.percent) {
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        this._state = 'end';
+        this.trigger('end');
+      }
+    }
+  }, {
+    key: 'onResize',
+    value: function onResize() {
+      this._touch = false;
+      if (this.options.resize) {
+        if (this._state !== 'end') {
+          this.init();
+        } else {
+          this.getCanvasInfo();
+        }
+      } else {
+        this.getCanvasInfo();
+      }
+    }
+  }]);
+  return LotteryCard;
+}(_events2.default);
+
+exports.default = LotteryCard;
