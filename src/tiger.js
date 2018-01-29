@@ -2,6 +2,7 @@ import './modules/assign'
 import Events from './modules/events'
 import animationEnd from './modules/animationEnd'
 
+/* eslint no-underscore-dangle: 0 */
 class LotteryTigerRoller {
   constructor (elem) {
     this.elem = elem
@@ -56,7 +57,7 @@ class LotteryTiger extends Events {
     this.options = Object.assign({
       interval: 300, // 每个roller间动画间隔
       aniMinTime: 6000, // 动画执行最少时间
-      resize: true // roller大小是否是可变的
+      resize: true, // roller大小是否是可变的
     }, options)
     this.toggle = toggle
 
@@ -68,8 +69,9 @@ class LotteryTiger extends Events {
 
     // 如果大小是可变的就绑定resize事件
     if (this.options.resize) {
-      window.addEventListener('onorientationchange' in document ? 'orientationchange' : 'resize', () => {
-        this.rollerQueue.forEach((roller) => roller.resize())
+      const handler = 'onorientationchange' in document ? 'orientationchange' : 'resize'
+      window.addEventListener(`${handler}`, () => {
+        this.rollerQueue.forEach(roller => roller.resize())
       })
     }
   }
@@ -82,9 +84,11 @@ class LotteryTiger extends Events {
     this.trigger('reset')
   }
 
-  setResult (ret) {
+  setResult(ret) {
     // 保证动画执行时间
     const endTime = (new Date()).getTime()
+    const time = endTime - this._startTime > this.options.aniMinTime ? 0 :
+      this.options.aniMinTime - (endTime - this._startTime)
     setTimeout(() => {
       for (let i = 0, l = this.rollerQueue.length; i < l; i++) {
         this.rollerQueue[i].stop(ret[i], (i === l - 1 ? () => {
@@ -92,7 +96,7 @@ class LotteryTiger extends Events {
           this.trigger('end')
         } : null), i * this.options.interval)
       }
-    }, endTime - this._startTime > this.options.aniMinTime ? 0 : this.options.aniMinTime - (endTime - this._startTime))
+    }, time)
   }
 
   draw () {

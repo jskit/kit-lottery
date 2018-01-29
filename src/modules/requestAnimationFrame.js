@@ -1,10 +1,12 @@
 let lastTime = 0
+
+/* eslint dot-notation: 0 */
 export const requestAnimationFrame = window.requestAnimationFrame ||
   window['msRequestAnimationFrame'] ||
   window['mozRequestAnimationFrame'] ||
   window['webkitRequestAnimationFrame'] ||
   window['oRequestAnimationFrame'] ||
-  function (callback) {
+  function requestAnimationFrame(callback) {
     const currTime = new Date().getTime()
     const timeToCall = Math.max(0, 16 - (currTime - lastTime))
     const id = window.setTimeout(() => {
@@ -20,6 +22,6 @@ export const cancelAnimationFrame = window.cancelAnimationFrame ||
   window['mozCancelAnimationFrame'] ||
   window['webkitCancelAnimationFrame'] ||
   window['oCancelAnimationFrame'] ||
-  function (id) {
+  function cancelAnimationFrame(id) {
     clearInterval(id)
   }

@@ -1,15 +1,17 @@
+
+/* eslint no-underscore-dangle: 0 */
 export default class Events {
-  constructor () {
+  constructor() {
     this._queue = []
   }
 
-  on (key, callback) {
+  on(key, callback) {
     this._queue[key] = this._queue[key] || []
     this._queue[key].push(callback)
     return this
   }
 
-  off (key, callback) {
+  off(key, callback) {
     if (this._queue[key]) {
       const index = typeof (callback) === 'undefined' ? -2 : this._queue[key].indexOf(callback)
       if (index === -2) {
@@ -22,13 +24,13 @@ export default class Events {
     return this
   }
 
-  has (key) {
+  has(key) {
     return !!this._queue[key]
   }
 
-  trigger (key, ...args) {
+  trigger(key, ...args) {
     if (this._queue[key]) {
-      this._queue[key].forEach((callback) => callback.apply(this, args))
+      this._queue[key].forEach(cb => cb.apply(this, args))
     }
     return this
   }

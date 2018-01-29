@@ -1,10 +1,10 @@
-const animationEvent = function () {
+const animationEvent = (() => {
   const el = document.createElement('div')
   const animations = {
-    'animation': 'animationend',
-    'webkitAnimation': 'webkitAnimationEnd',
-    'msAnimation': 'MSAnimationEnd',
-    'oAnimation': 'oanimationend'
+    animation: 'animationend',
+    webkitAnimation: 'webkitAnimationEnd',
+    msAnimation: 'MSAnimationEnd',
+    oAnimation: 'oanimationend',
   }
 
   for (const t in animations) {
@@ -14,7 +14,7 @@ const animationEvent = function () {
   }
 
   return null
-}()
+})()
 
 /**
  * 处理animate动画结束时间
@@ -28,5 +28,6 @@ export default function (el, callback, animateTime = 0) {
     el.removeEventListener(animationEvent, bind)
   }
 
-  animationEvent ? el.addEventListener(animationEvent, bind) : setTimeout(() => callback(), animateTime)
+  animationEvent ? el.addEventListener(animationEvent, bind) :
+    setTimeout(() => callback(), animateTime)
 }

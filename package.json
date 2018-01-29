@@ -1,33 +1,53 @@
 {
-  "name": "lottery",
-  "version": "1.0.0",
-  "description": "移动端抽奖插件[大转盘，老虎机，刮刮卡]",
-  "main": "./dist/lottery.js",
+  "name": "kit-lottery",
+  "version": "0.0.1",
+  "description": "移动端抽奖 lottery [刮刮卡，大转盘，老虎机]",
+  "main": "lib/index.js",
   "scripts": {
     "dev": "NODE_ENV=development node build/index.js",
-    "release": "NODE_ENV=production node build/index.js"
+    "release": "NODE_ENV=production node build/index.js",
+    "prepublishOnly": "npm run lib",
+    "lib": "babel src -d lib",
+    "benchmark": "node test && node benchmark",
+    "test": "npm run lint",
+    "lint": "eslint --ext .js src app"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/94cstyles/lottery.git"
+    "url": "git+https://github.com/jskit/kit-lottery.git"
   },
-  "author": "cstyles",
-  "license": "ISC",
+  "keywords": [
+    "kit-lottery",
+    "kitjs"
+  ],
+  "author": "cloudyan <1395093509@qq.com>",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/94cstyles/lottery/issues"
+    "url": "https://github.com/jskit/kit-lottery/issues"
   },
-  "homepage": "https://github.com/94cstyles/lottery#readme",
+  "homepage": "https://github.com/jskit/kit-lottery#readme",
+  "dependencies": {},
   "devDependencies": {
-    "babel-preset-es2015-loose-rollup": "^7.0.0",
-    "eslint": "^3.19.0",
-    "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-html": "^2.0.1",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-node": "^4.2.2",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "rollup": "^0.41.6",
-    "rollup-plugin-babel": "^2.7.1",
-    "rollup-plugin-uglify": "^1.0.2"
+    "autoprefixer": "^7.2.5",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.1",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-import": "^1.6.3",
+    "babel-plugin-istanbul": "^4.1.5",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "benchmark": "^2.1.4",
+    "bluebird": "^3.5.1",
+    "eslint": "^4.15.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-friendly-formatter": "^3.0.0",
+    "eslint-import-resolver-webpack": "^0.8.4",
+    "eslint-plugin-html": "^4.0.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "opn": "^5.2.0"
   }
 }

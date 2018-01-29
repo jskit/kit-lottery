@@ -1,6 +1,7 @@
 import './modules/assign'
 import Events from './modules/events'
 
+/* eslint no-underscore-dangle: 0 */
 class LotteryCard extends Events {
   constructor (canvas, options) {
     super()
@@ -9,7 +10,7 @@ class LotteryCard extends Events {
       size: 20, // 滑动区域大小
       percent: 50, // 激活百分比 到该值就显示结果
       resize: true, // canvas大小是否是可变的
-      cover: null
+      cover: null,
     }, options)
 
     this.canvas = canvas
@@ -23,8 +24,10 @@ class LotteryCard extends Events {
 
   getCanvasInfo () {
     const info = this.canvas.getBoundingClientRect()
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
-    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeftp || 0
+    const scrollTop = window.pageYOffset ||
+        document.documentElement.scrollTop || document.body.scrollTop || 0
+    const scrollLeft = window.pageXOffset ||
+        document.documentElement.scrollLeft || document.body.scrollLeftp || 0
 
     this.width = info.width
     this.height = info.height
@@ -50,7 +53,7 @@ class LotteryCard extends Events {
     // 绘制遮罩层
     this.ctx.closePath()
     this.ctx.globalCompositeOperation = 'source-over'
-    const cover = this.options.cover
+    const { cover } = this.options
     if (cover instanceof Image) {
       this.ctx.fillStyle = this.ctx.createPattern(cover, 'repeat')
       this.ctx.rect(0, 0, this.width, this.height)
@@ -85,8 +88,9 @@ class LotteryCard extends Events {
     const imageData = this.ctx.getImageData(0, 0, this.width, this.height)
     let hits = 0
 
-    for (let i = 0, ii = imageData.data.length; i < ii; i = i + 4) {
-      if (imageData.data[i] === 0 && imageData.data[i + 1] === 0 && imageData.data[i + 2] === 0 && imageData.data[i + 3] === 0) {
+    for (let i = 0, ii = imageData.data.length; i < ii; i += 4) {
+      if (imageData.data[i] === 0 && imageData.data[i + 1] === 0 &&
+          imageData.data[i + 2] === 0 && imageData.data[i + 3] === 0) {
         hits++
       }
     }
@@ -98,7 +102,7 @@ class LotteryCard extends Events {
     e = e.changedTouches ? e.changedTouches[0] : e
     return {
       x: e.pageX - this.offsetX,
-      y: e.pageY - this.offsetY
+      y: e.pageY - this.offsetY,
     }
   }
 

@@ -7,7 +7,7 @@
  */
 export default function (el, property, value) {
   function camelCase (str) {
-    return str.replace(/-([a-z])/ig, function (all, letter) {
+    return str.replace(/-([a-z])/ig, (all, letter) => {
       return letter.toUpperCase()
     })
   }
